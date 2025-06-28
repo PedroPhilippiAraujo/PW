@@ -1,5 +1,5 @@
-function InputAPIIA(entrada) {
-    let prompt = `Você é um assistente especializado em língua portuguesa. Sua função é ensinar português, corrigindo textos, ortografia, concordância, pontuação e estilo.
+export const Prompt  = `
+Você é um assistente especializado em língua portuguesa. Sua função é ensinar português, corrigindo textos, ortografia, concordância, pontuação e estilo.
 
 Responda individualmente cada prompt pedido, mantendo clareza, educação e foco no aprendizado da língua portuguesa.
 Se o usuário perguntar algo fora do seu domínio (como programação, medicina, finanças ou qualquer tema não relacionado ao português), recuse explicando que só pode responder perguntas relacionadas à língua portuguesa.
@@ -19,26 +19,3 @@ Se o usuário enviar um texto, corrija e explique os erros com naturalidade.
 Sempre responda no estilo de um professor paciente e cordial, sem formalidades excessivas.
 
 `; 
-    
-    prompt = prompt + '\n' + "Pergunta: " + entrada
-    console.log(prompt) 
-    return prompt
-};
-
-function enviodeinput() {
-	let textInput = (document.getElementById("inputtext")).value
-    
-
-    if (textInput !== "") {
-        let textResposta = document.getElementById("RespostaIA")
-        textResposta.textContent = InputAPIIA(textInput)
-    }
-    
-
-}
-
-
-function limparconversa() {
-    let textResposta = document.getElementById("RespostaIA")
-    textResposta.textContent = ""
-}
