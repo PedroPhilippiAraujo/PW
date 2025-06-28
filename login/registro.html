@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,
+        initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css" media="all">
+        
+    <title>Login</title>
+</head>
+
+
+<body>
+
+    <form id="loginForm" class="login-form-container">
+        <h2>Entrar</h2>
+        <div class="form-group">
+            <label for="username">Usuário/E-mail:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="repeatpassword">Repita a Senha:</label>
+            <input type="password" name="repeatpassword" id="repeatpassword" required>
+        </div>
+        <button type="submit">Cadastrar</button>
+        <div id="mensagem"></div>
+    </form>
+
+
+<script src="../js/registro.js"></script>
+
+
+<p><a href="./login.html" class="botao-login">Clique aqui para fazer Login</a></p>
+
+</body>
+
+</html>
