@@ -6,6 +6,8 @@
         content="width=device-width,
         initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="style.css" media="all">
+    
+        <script src="./js/inputIA.js"></script>
     <title>Projeto Tutor de IA PT-BR</title>
 </head>
 <body>
@@ -25,6 +27,17 @@
 
     </aside>
     <main>
+
+        <section id= "#section-chatbox">
+            <h1>Chatbox</h1>
+        <input type="text" placeholder="Digite Aqui o Texto que deseja melhorar" id="inputtext" minlength="5">
+        <input type="button" value="Enviar" id="envioinput" onClick="enviodeinput()"> 
+        <p>Resposta da IA:</p>
+        <p id="RespostaIA"></p>
+            
+        </section>
+        
+
         <section id="#section-projeto">
             <p class="margem-baixa"></p><p class="margem-baixa"></p>
             <h1>Projeto Tutor de IA PT-BR</h1>
