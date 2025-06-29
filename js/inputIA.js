@@ -1,44 +1,72 @@
-function InputAPIIA(entrada) {
+import { InferenceClient } from "https://esm.sh/@huggingface/inference";
+
+
+async function InputAPIIA(entrada) {
     let prompt = `Você é um assistente especializado em língua portuguesa. Sua função é ensinar português, corrigindo textos, ortografia, concordância, pontuação e estilo.
 
 Responda individualmente cada prompt pedido, mantendo clareza, educação e foco no aprendizado da língua portuguesa.
-Se o usuário perguntar algo fora do seu domínio (como programação, medicina, finanças ou qualquer tema não relacionado ao português), recuse explicando que só pode responder perguntas relacionadas à língua portuguesa.
-NÃO RESPONDA A PERGUNTAS SOBRE OUTROS TEMAS, gentilmente diga que não pode ajudar.
 
-Exemplos de temas aceitáveis:
-- Correção de textos
-- Uso de vírgulas
-- Concordância verbal
-- Coesão e coerência
-- Estilo formal ou informal
-- Estrutura de frases
-- Dúvidas sobre palavras ou expressões
-
-Se o usuário enviar um texto, corrija e explique os erros com naturalidade.
+Quando o usuário enviar um texto, corrija e explique os erros com naturalidade.
 
 Sempre responda no estilo de um professor paciente e cordial, sem formalidades excessivas.
 
-`; 
-    
-    prompt = prompt + '\n' + "Pergunta: " + entrada
-    console.log(prompt) 
-    return prompt
-};
+RESPONDA SEMPRE EM PORTUGUÊS
 
-function enviodeinput() {
+`; 
+     
+    prompt = prompt + '\n' + "Texto: " + entrada
+
+    // IMPORTANT: HUGGINGFACE_API_KEY is not defined here.
+    // Make sure this constant is defined elsewhere or passed in securely.
+    // For browser applications, directly embedding API keys is generally not recommended for production.
+    const client = new InferenceClient(huggingFaceApiKey); 
+
+
+    try {
+        // Use the 'text-generation' task
+        const response = await client.textGeneration({
+            model: "meta-llama/Llama-3.1-8B", 
+            inputs: prompt,
+            parameters: {
+                max_new_tokens: 384,
+                temperature: 0.5, // Controls randomness (higher = more random)
+                do_sample: true, // Enables sampling (necessary for temperature)
+                num_return_sequences: 1,
+                top_p: 0.9
+            }
+        });
+        console.log("Generated Text:", response.generated_text);
+        console.log(prompt)
+        return response.generated_text;
+
+    } catch (error) {
+        console.error("Error during text generation:", error);
+        return "Failed to generate text.";
+    }
+}; // <-- This brace is for InputAPIIA
+
+
+async function enviodeinput() { // Make enviodeinput async
 	let textInput = (document.getElementById("inputtext")).value
     
 
     if (textInput !== "") {
         let textResposta = document.getElementById("RespostaIA")
-        textResposta.textContent = InputAPIIA(textInput)
+        // Await the asynchronous InputAPIIA call
+        textResposta.textContent = await InputAPIIA(textInput) 
     }
     
 
 }
 
 
+window.enviodeinput = enviodeinput; // Expose to global scope for onClick
+
 function limparconversa() {
     let textResposta = document.getElementById("RespostaIA")
     textResposta.textContent = ""
 }
+
+window.limparconversa = limparconversa; // Expose to global scope for onClick
+// Add this line for salvarconversa if it's in this file too
+// window.salvarconversa = salvarconversa;
