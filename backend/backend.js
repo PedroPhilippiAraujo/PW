@@ -3,16 +3,53 @@ const express = require('express');
 const bodyParser = require('body-parser'); // Para analisar JSON do frontend
 const cors = require('cors'); // Para permitir requisições de origens diferentes (CORS)
 const session = require('express-session'); // Para gerenciar sessões e cookies
+const https = require('https'); // NEW: Require the https module
+const fs = require('fs');
+
+
+require('dotenv').config(); // Load environment variables from .env
+
 
 const app = express();
 const port = 3000;
 
-// Configurar CORS para permitir requisições do seu frontend (ex: http://127.0.0.1:5500 ou file://)
-// Em um ambiente de produção, substitua '*' pela URL exata do seu frontend.
+const privateKey = fs.readFileSync('certs/localhost+1-key.pem', 'utf8'); // Assuming in same directory or adjust path
+const certificate = fs.readFileSync('certs/localhost+1.pem', 'utf8');   // Assuming in same directory or adjust path
+const credentials = { key: privateKey, cert: certificate };
+
+//API key declarada no .env
+//const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
+
+//const { InferenceClient } = require('@huggingface/inference');
+
+//const hf = new InferenceClient(HUGGINGFACE_API_KEY);
+
+const allowedOrigins = [
+    'http://webdev.pedro.pa.vms.ufsc.br', //http
+    'https://webdev.pedro.pa.vms.ufsc.br', // https Your production/staging domain
+    'http://localhost:5500',              // Common for VS Code Live Server
+    'http://127.0.0.1:5500',              // Also common for Live Server
+    'http://localhost:8080',
+    'https://localhost:3000', 
+    'https://127.0.0.1:3000'           
+    // Add any other specific origins where you might be serving your frontend
+];
+
+ //Configurar CORS para permitir requisições do seu frontend (ex: http://127.0.0.1:5500 ou file://)
+ //Em um ambiente de produção, substitua '*' pela URL exata do seu frontend.
 app.use(cors({
-    origin: 'https://webdev.pedro.pa.vms.ufsc.br/js/login.js', // Ou a URL do seu servidor de desenvolvimento, ex: http://localhost:8080
-    credentials: true // Importante para enviar e receber cookies
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    credentials: true
 }));
+
 
 // Middleware para analisar o corpo das requisições como JSON
 app.use(bodyParser.json());
@@ -26,7 +63,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true, // Impedir acesso via JavaScript no frontend
-        secure: false, // Em desenvolvimento pode ser 'false', em produção DEVE SER 'true' (exige HTTPS)
+        secure: true, // Em desenvolvimento pode ser 'false', em produção DEVE SER 'true' (exige HTTPS)
         maxAge: 1000 * 60 * 60 * 24, // 24 horas
         sameSite: 'Lax' // Proteção CSRF
     }
@@ -54,14 +91,6 @@ app.post('/login', (req, res) => {
     }
 });
 
-// Exemplo de rota protegida (requer login)
-app.get('/dashboard', (req, res) => {
-    if (req.session.userId) {
-        return res.status(200).json({ message: `Bem-vindo ao dashboard, ${req.session.username}!` });
-    } else {
-        return res.status(401).json({ message: 'Não autorizado. Por favor, faça login.' });
-    }
-});
 
 // Exemplo de rota de logout
 app.post('/logout', (req, res) => {
@@ -84,6 +113,14 @@ app.get('/auth-status', (req, res) => {
         return res.status(200).json({ loggedIn: false });
     }
 });
+
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(3000, () => {
+    console.log(`Servidor backend HTTPS rodando em https://localhost:3000`);
+    console.log('Lembre-se de usar um store de sessão persistente em produção!');
+});
+
 
 app.listen(port, () => {
     console.log(`Servidor backend rodando em http://webdev.pedro.pa.vms.br:${port}`);

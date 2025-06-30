@@ -21,9 +21,10 @@ loginForm.addEventListener('submit', async function(event) { // Adicionado 'asyn
         password: password
     };
     
+    console.log("dados enviados")
     // 2. Faz a requisição para o backend usando a Fetch API
     try {
-        const response = await fetch('http://webdev.pedro.pa.vms.ufsc.br:3000', {
+        const response = await fetch('https://localhost:3000/login', {
             method: 'POST', // Define o método HTTP como POST
             headers: {
                 'Content-Type': 'application/json' // Informa ao servidor que estamos enviando JSON
