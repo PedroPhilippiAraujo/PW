@@ -17,7 +17,7 @@ RESPONDA SEMPRE EM PORTUGUÊS
     prompt = prompt + '\n' + "Texto: " + entrada
 
     // IMPORTANT: HUGGINGFACE_API_KEY is defined in .env
-    const client = new InferenceClient(HUGGINGFACE_API_KEY); 
+    const client = new InferenceClient(huggingFaceApiKey); 
 
 
     try {
@@ -45,47 +45,17 @@ RESPONDA SEMPRE EM PORTUGUÊS
 
 
 async function enviodeinput() { // Make enviodeinput async
-	let textInput = (document.getElementById("inputtext")).value;
-    let textResposta = document.getElementById("RespostaIA");
-
-    // 1. Verificar o status de autenticação com o backend
-    try {
-        const authCheckResponse = await fetch('http://localhost:3000/auth-status', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include' // IMPORTANTE: Para enviar cookies de sessão
-        });
-
-        const authData = await authCheckResponse.json();
-
-        if (!authData.loggedIn) {
-            // Usuário não está logado
-            textResposta.textContent = "Você precisa estar logado para enviar texto para a IA.";
-            textResposta.style.color = "red"; // Apenas para feedback visual
-            return; // Interrompe a função se não estiver logado
-        }
-
-        // Se o usuário estiver logado, continua com o envio para a IA
-        if (textInput.trim() !== "") { // Usar trim() para verificar se não é só espaço em branco
-            textResposta.textContent = "Processando..."; // Feedback para o usuário
-            textResposta.style.color = "black"; // Volta para cor padrão
-            textResposta.textContent = await InputAPIIA(textInput);
-        } else {
-            textResposta.textContent = "Por favor, digite algum texto para a IA.";
-            textResposta.style.color = "orange";
-        }
-
-    } catch (error) {
-        console.error("Erro ao verificar status de autenticação:", error);
-        textResposta.textContent = "Erro ao verificar seu status de login. Tente novamente mais tarde.";
-        textResposta.style.color = "red";
-    }
-}
+	let textInput = (document.getElementById("inputtext")).value
     
 
+    if (textInput !== "") {
+        let textResposta = document.getElementById("RespostaIA")
+        // Await the asynchronous InputAPIIA call
+        textResposta.textContent = await InputAPIIA(textInput) 
+    }
+    
 
+}
 
 
 window.enviodeinput = enviodeinput; // Expose to global scope for onClick
