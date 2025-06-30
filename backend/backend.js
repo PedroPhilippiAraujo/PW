@@ -41,7 +41,6 @@ app.post('/login', (req, res) => {
     console.log(`Tentativa de login: Usuário: ${username}, Senha: ${password}`);
 
     // Simulação de verificação de credenciais no backend
-    // EM UM CASO REAL: Você compararia a senha fornecida com o HASH da senha no seu banco de dados
     if (username === 'usuario' && password === 'senha123') {
         // Login bem-sucedido: Armazenar informações na sessão do usuário
         req.session.userId = 1;
@@ -75,6 +74,16 @@ app.post('/logout', (req, res) => {
     });
 });
 
+ // verificação de login
+app.get('/auth-status', (req, res) => {
+    if (req.session.userId) { // Verifica se há um userId na sessão
+        // Se houver, o usuário está logado
+        return res.status(200).json({ loggedIn: true, username: req.session.username });
+    } else {
+        // Se não houver, o usuário não está logado
+        return res.status(200).json({ loggedIn: false });
+    }
+});
 
 app.listen(port, () => {
     console.log(`Servidor backend rodando em http://webdev.pedro.pa.vms.br:${port}`);
