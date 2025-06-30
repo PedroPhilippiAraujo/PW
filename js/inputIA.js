@@ -16,9 +16,7 @@ RESPONDA SEMPRE EM PORTUGUÊS
      
     prompt = prompt + '\n' + "Texto: " + entrada
 
-    // IMPORTANT: HUGGINGFACE_API_KEY is not defined here.
-    // Make sure this constant is defined elsewhere or passed in securely.
-    // For browser applications, directly embedding API keys is generally not recommended for production.
+    // IMPORTANT: HUGGINGFACE_API_KEY is defined in .env
     const client = new InferenceClient(huggingFaceApiKey); 
 
 
@@ -31,7 +29,7 @@ RESPONDA SEMPRE EM PORTUGUÊS
                 max_new_tokens: 384,
                 temperature: 0.5, // Controls randomness (higher = more random)
                 do_sample: true, // Enables sampling (necessary for temperature)
-                num_return_sequences: 1,
+                num_return_sequences: 1, //number of responses
                 top_p: 0.9
             }
         });
@@ -43,7 +41,7 @@ RESPONDA SEMPRE EM PORTUGUÊS
         console.error("Error during text generation:", error);
         return "Failed to generate text.";
     }
-}; // <-- This brace is for InputAPIIA
+};
 
 
 async function enviodeinput() { // Make enviodeinput async

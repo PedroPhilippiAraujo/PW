@@ -14,7 +14,18 @@
 
 
 <body>
+<header>
+        <nav>
+        <a href="index.html"><img src="../imgs/logo.png" style="scale: 0.5; margin-top: 15px; margin-left: -200%;"></a>
+            <menu>
+                <li><a href="./login/login.html" class="botao-login">Login/Registro</a></li>
+                <li>Histórico de Conversas</li>
+                <li><a href="./sobre.html" class="botao-sobre">Sobre o Projeto</a></li>
+            </menu>
+        </nav>
+    </header>
 
+    <main style="align-self: center; margin-right: 20%;">
     <form id="loginForm" class="login-form-container">
         <h2>Entrar</h2>
         <div class="form-group">
@@ -25,15 +36,14 @@
             <label for="password">Senha:</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <button type="submit">Entrar</button>
+        <button type="submit" class="botao-basico">Entrar</button>
+        <p><a href="./registro.html" class="botao-basico">Clique aqui para Registrar</a></p>
         <div id="mensagem"></div>
     </form>
-
+    </main>
 
 <script src="../js/login.js"></script>
 
-
-<p><a href="./registro.html" class="botao-registro">Clique aqui para Registrar</a></p>
 
 </body>
 

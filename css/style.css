@@ -54,8 +54,52 @@ aside {
     grid-area: a;
     padding-left: 20px;
     padding-right: 20px;
-    z-index: -2;
+    z-index: 1;
 }
+
+.login-form-container {
+    background-color:rgb(58, 84, 124);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15%;
+    width: 100%;
+    height: 200%;
+    scale: 1.0;
+    font-size: larger;
+    align-content: center;
+
+}
+
+.botao-basico{
+    /* Basic box model */
+  display: inline-block; /* Makes it behave like a button, allowing padding and margin */
+  padding: 0.5em 1em; /* Standard button padding */
+  margin: 0; /* Remove default margins that some elements might have */
+
+  /* Appearance */
+  background-color: #e0e0e0; /* Light gray, common default button background */
+  border: 1px solid #c0c0c0; /* Light gray border */
+  border-radius: 3px; /* Slightly rounded corners, common */
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+
+  /* Text styling */
+  color: #333; /* Dark gray text color */
+  font-family: sans-serif; /* Use a common sans-serif font */
+  font-size: 1rem; /* Standard font size */
+  line-height: 1.5; /* Adjust line height for better vertical alignment */
+  text-align: center; /* Center the text */
+  text-decoration: none; /* Remove underlines if it's an <a> tag */
+
+  /* Interactivity */
+  cursor: pointer; /* Indicates it's clickable */
+  -webkit-appearance: none; /* Reset default browser styles for some elements (e.g., input type="button") */
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Transitions for smoother hover/active effects */
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
 
 .blured-box {
     position: relative;
